@@ -16,3 +16,6 @@
 ; After cloning a fork, materialise the submodule working trees with:
 ;
 ;   git submodule update --init --recursive
+[submodule "submodules/lez-atomic-swaps"]
+	path = submodules/lez-atomic-swaps
+	url = https://github.com/gateway-fm/lez-atomic-swaps

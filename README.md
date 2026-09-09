@@ -1,3 +1,34 @@
+# LEZ Atomic Swaps — Logos module catalog
+
+This fork of `logos-co/logos-modules-release-base` publishes the two Basecamp
+apps of [gateway-fm/lez-atomic-swaps](https://github.com/gateway-fm/lez-atomic-swaps):
+**LEZ / BTC Maker** (`lez_atomic_swap_maker`) and **LEZ / BTC Taker**
+(`lez_atomic_swap_taker`).
+
+Add it to Basecamp (Settings → Repositories) with this catalog URL:
+
+```
+https://raw.githubusercontent.com/mandrigin/logos-modules-release-base/main/logos-repo.json
+```
+
+Both apps live in one submodule (`submodules/lez-atomic-swaps`, under
+`apps/basecamp/<role>`), so the per-module workflows point `module_path`
+below the submodule root and `modules.txt` lists the module paths that
+**Release all modules** fans out over. Each app carries its own `flake.nix`
+next to its `metadata.json`; the app version in `metadata.json` follows the
+upstream release tag (`0.2.1` ↔ `v0.2.1`). To publish a new version, bump the
+submodule pointer to the release tag and run **Release all modules**:
+
+```sh
+git -C submodules/lez-atomic-swaps fetch --tags && git -C submodules/lez-atomic-swaps checkout v0.2.1
+git add submodules/lez-atomic-swaps && git commit -m "lez-atomic-swaps v0.2.1" && git push
+./scripts/catalog.sh release-all --watch
+```
+
+Releases are unsigned (`trustedSigners` is empty); see *Signing* below.
+
+---
+
 # logos-modules-release-base
 
 A **fork-me** starting point for running your own Logos module catalog.

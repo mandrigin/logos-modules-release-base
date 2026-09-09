@@ -1,0 +1,5 @@
+# Module paths this catalog publishes, one per line. "Release all modules"
+# reads this file instead of .gitmodules because one submodule
+# (lez-atomic-swaps) carries several Logos packages in subdirectories.
+submodules/lez-atomic-swaps/apps/basecamp/maker
+submodules/lez-atomic-swaps/apps/basecamp/taker

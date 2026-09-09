@@ -38,12 +38,19 @@ jobs:
         run: |
           set -euo pipefail
           # Every `path = submodules/<repo>` entry in .gitmodules.
-          paths="$(git config --file .gitmodules --get-regexp 'submodule\..*\.path$' 2>/dev/null \
-                   | awk '{print $2}' | sort -u || true)"
+          # modules.txt lists module paths explicitly (a submodule may hold
+          # several modules in subdirectories); without it, every submodule
+          # root is a module.
+          if [ -s modules.txt ]; then
+            paths="$(grep -vE '^[[:space:]]*(#|$)' modules.txt | sort -u || true)"
+          else
+            paths="$(git config --file .gitmodules --get-regexp 'submodule\..*\.path$' 2>/dev/null \
+                     | awk '{print $2}' | sort -u || true)"
+          fi
           if [ -z "${paths}" ]; then
             echo 'matrix={"module_path":[]}' >> "$GITHUB_OUTPUT"
             echo 'count=0' >> "$GITHUB_OUTPUT"
-            echo "No submodules declared in .gitmodules — nothing to release."
+            echo "No modules listed in modules.txt or .gitmodules — nothing to release."
             exit 0
           fi
           matrix="$(printf '%s\n' ${paths} | jq -R . | jq -cs '{module_path: .}')"
